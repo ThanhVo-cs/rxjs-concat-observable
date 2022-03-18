@@ -9,6 +9,7 @@ import {
   pipe,
   take,
   fromEvent,
+  concat,
 } from 'rxjs';
 
 // tạo observable
@@ -31,7 +32,8 @@ const observer = {
 // sự kiện clicks
 const clicks = fromEvent(document, 'click').pipe(take(5));
 
-// merge 2 sự kiện click và ob (có thể merge nhiều observable) => nhiều thèn chạy đồng thời
-// tham số 1 có nghĩa là thèn click sẽ thực hiện trước rồi mới tới ob, nếu không truyền thì 2 thèn sẽ chạy đồng thời
-// clicks chạy 5 lần xong thì thèn ob mới chạy 10 lần
-const subscription = merge(clicks, ob, 1).subscribe(observer);
+// concat => thèn này chạy xong rồi thèn kia mới chạy
+const subscription = concat(clicks, ob).subscribe(observer);
+
+// trường hợp thực tế
+// update dữ liệu xong thì mới lấy danh sách dữ liệu ra
